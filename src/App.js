@@ -1,24 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+
+class Form extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      inputs: []
+    };
+  }
+
+  render() {
+    const inputs = this.state.inputs.map(k => {
+      return <input ref={this.logRef.bind(this, `dynamic${k}`)} />;
+    });
+    return (
+      <div>
+        {inputs}
+        <input ref={this.logRef.bind(this, "static")} />
+        <button onClick={this.reRender}>re-render</button>
+      </div>
+    );
+  }
+
+  logRef(name, ref) {
+    console.log(name, ref);
+  }
+
+  reRender = () => {
+    let inputs = [];
+    if (!this.state.inputs.length) {
+      inputs.push(1);
+    }
+    this.setState({ inputs });
+  };
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Form />
     </div>
   );
 }
